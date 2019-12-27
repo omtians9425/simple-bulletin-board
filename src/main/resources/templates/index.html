@@ -46,7 +46,7 @@
             <tr class="Area_article_title">
                 <td>
                     <label>
-                        <input type="radio" name="article_check" th:text="*{id} + '.   ' + *{title}"/>
+                        <input type="radio" name="article_check" th:text="*{id} + '.   ' + *{title}" th:data-id="*{id}"/>
                     </label>
                 </td>
             </tr>
@@ -63,5 +63,14 @@
         </table>
     </div>
 </div>
+
+<div class="Area_change_article">
+    <form th:action="@{/}" th:method="get" name="form_change_article">
+        <button type="button" onclick="changeArticleSubmit('update')">編集</button>
+        <button type="button">削除</button>
+    </form>
+
+</div>
+
 </body>
 </html>
