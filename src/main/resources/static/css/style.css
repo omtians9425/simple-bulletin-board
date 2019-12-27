@@ -86,3 +86,11 @@ table.Area_articles_table tbody tr.Area_article_title label input {
     left: 0;
     margin: auto;
 }
+
+/* 記事の編集削除エリア*/
+div.Area_change_article {
+    width: 100%;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
