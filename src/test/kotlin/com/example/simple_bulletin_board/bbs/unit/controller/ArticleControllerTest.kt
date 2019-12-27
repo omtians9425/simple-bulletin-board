@@ -7,6 +7,7 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
+import org.springframework.test.context.jdbc.Sql
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
@@ -45,6 +46,23 @@ class ArticleControllerTest {
         mockMvc.perform(get("/"))
                 .andExpect(status().isOk)
                 .andExpect(model().attributeExists("articles"))
-                .andExpect(view().name("index"))
+                .andExpect(view().name("index")) // not content()#string(). this is for api (not view)
+    }
+
+    @Test
+    fun getArticleEdit_notExists_redirect() {
+        mockMvc.perform(get("/edit/" + 0))
+                .andExpect(status().is3xxRedirection)
+                .andExpect(view().name("redirect:/"))
+    }
+
+    @Test
+    @Sql(statements = ["INSERT INTO article (name, title, contents, article_key) VALUES ('test', 'test', 'test', 'test')"])
+    fun getArticleEdit_exists_edit() {
+        val lastArticle = target.articleRepository.findAll().last()
+
+        mockMvc.perform(get("/edit/" + lastArticle.id))
+                .andExpect(status().isOk)
+                .andExpect(view().name("edit"))
     }
 }
