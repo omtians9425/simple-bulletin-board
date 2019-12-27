@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>サンプル掲示板</title>
     <link rel="stylesheet" href="/css/style.css">
+    <script src="js/index.js"></script>
 </head>
 <body>
 <header class="Area_header">サンプル掲示板</header>
@@ -66,7 +67,7 @@
 
 <div class="Area_change_article">
     <form th:action="@{/}" th:method="get" name="form_change_article">
-        <button type="button" onclick="changeArticleSubmit('update')">編集</button>
+        <button type="button" onclick="changeArticleSubmit('Update')">編集</button> <!--call js method-->
         <button type="button">削除</button>
     </form>
 
