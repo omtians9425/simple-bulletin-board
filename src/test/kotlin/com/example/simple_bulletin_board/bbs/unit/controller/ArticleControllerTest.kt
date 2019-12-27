@@ -1,6 +1,8 @@
 package com.example.simple_bulletin_board.bbs.unit.controller
 
 import com.example.simple_bulletin_board.bbs.app.controller.ArticleController
+import org.hamcrest.MatcherAssert.assertThat
+import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
@@ -64,5 +66,53 @@ class ArticleControllerTest {
         mockMvc.perform(get("/edit/" + lastArticle.id))
                 .andExpect(status().isOk)
                 .andExpect(view().name("edit"))
+    }
+
+    @Test
+    fun updateArticle_notExists_redirectToIndex() {
+        mockMvc.perform(post("/update")
+                .param("id", "0")
+                .param("name", "test")
+                .param("title", "test")
+                .param("contents", "test")
+                .param("articleKey", "err.")
+        )
+                .andExpect(status().is3xxRedirection)
+                .andExpect(view().name("redirect:/"))
+    }
+
+    @Test
+    @Sql(statements = ["INSERT INTO article (name, title, contents, article_key, register_at, update_at) VALUES ('test', 'test', ' test', 'test', now(), now());"])
+    fun updateArticle_notKeyMatch_redirectToEdit() {
+        val latestArticle = target.articleRepository.findAll().last()
+
+        mockMvc.perform(post("/update")
+                .param("id", latestArticle.id.toString())
+                .param("name", latestArticle.name)
+                .param("title", latestArticle.title)
+                .param("contents", latestArticle.contents)
+                .param("articleKey", "differentKey")
+        )
+                .andExpect(status().is3xxRedirection)
+                .andExpect(view().name("redirect:/edit/${latestArticle.id}"))
+    }
+
+    @Test
+    @Sql(statements = ["INSERT INTO article (name, title, contents, article_key, register_at, update_at) VALUES ('test', 'test', ' test', 'test', now(), now());"])
+    fun updateArticle_keyMatch_updateAndRedirectToIndex() {
+        val latestArticle = target.articleRepository.findAll().last()
+
+        mockMvc.perform(post("/update")
+                .param("id", latestArticle.id.toString())
+                .param("name", "updated")
+                .param("title", latestArticle.title)
+                .param("contents", latestArticle.contents)
+                .param("articleKey", latestArticle.articleKey)
+        )
+                .andExpect(status().is3xxRedirection)
+                .andExpect(view().name("redirect:/"))
+
+        val updated = target.articleRepository.findAll().last()
+        assertEquals("updated", updated.name)
     }
 }
