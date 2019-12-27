@@ -9,9 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner
 import org.springframework.test.web.servlet.MockMvc
+import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.*
 import org.springframework.test.web.servlet.setup.MockMvcBuilders
 
 @RunWith(SpringJUnit4ClassRunner::class)
@@ -38,5 +38,13 @@ class ArticleControllerTest {
                         .param("articleKey", "test"))
                 .andExpect(status().isOk)
                 .andExpect(content().string("Saved"))
+    }
+
+    @Test
+    fun getArticleListTest() {
+        mockMvc.perform(get("/"))
+                .andExpect(status().isOk)
+                .andExpect(model().attributeExists("articles"))
+                .andExpect(view().name("index"))
     }
 }
