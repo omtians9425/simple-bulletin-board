@@ -1,0 +1,88 @@
+body {
+    background-color: white;
+    color: black;
+}
+
+div.border_line {
+    border-bottom: 2px solid gray;
+}
+
+header.Area_header {
+    text-align: center;
+    font-size: x-large;
+    margin-bottom: 20px;
+}
+
+div.Area_register {
+    width: 100%;
+    text-align: center
+    margin-bottom 20px;
+}
+
+table.Area_register_table {
+    width: 40%;
+    margin: auto;
+}
+
+table.Area_register_table tbody {
+    width: 100%;
+}
+
+table.Area_register_table tbody tr {
+    width: 100%;
+}
+
+table.Area_register_table tbody tr td.heading {
+    width: 30%;
+}
+
+table.Area_register_table tbody tr td.body {
+    width: 70%;
+    text-align: left;
+}
+
+div.Area_articles {
+    width: 100%;
+    margin: auto;
+    margin-top: 20px;
+}
+
+table.Area_articles_table {
+    width: 80%;
+    margin: auto;
+    margin-bottom: 10px;
+}
+
+table.Area_articles_table tbody {
+    width: 100%;
+    text-align: left;
+}
+
+table.Area_articles_table tbody tr {
+    width: 100%;
+}
+
+table.Area_articles_table tbody tr td pre {
+    margin: 0;
+}
+
+table.Area_articles_table tbody tr.Area_article_title {
+    background-color: #8888AA;
+    color: white;
+    font-weight: bold;
+}
+
+table.Area_articles_table tbody tr.Area_article_title label {
+    display: block;
+    position: relative;
+    padding-left: 1em;
+}
+
+table.Area_articles_table tbody tr.Area_article_title label input {
+    display: block;
+    position: absolute;
+    top: 0;
+    bottom: 2px;
+    left: 0;
+    margin: auto;
+}
