@@ -30,7 +30,7 @@ class ArticleController {
     @GetMapping("/")
     fun getArticleList(model: Model): String {
         model.addAttribute("articles", articleRepository.findAll())
-        return "index"
+        return "index" // means "index.html"
     }
 
     @GetMapping("/edit/{id}")
@@ -38,7 +38,7 @@ class ArticleController {
         return if (articleRepository.existsById(id)) {
             //attribute name is used by html
             model.addAttribute("article", articleRepository.findById(id))
-            "edit"
+            "edit" // means "edit.html"
         } else {
             "redirect:/"
         }
