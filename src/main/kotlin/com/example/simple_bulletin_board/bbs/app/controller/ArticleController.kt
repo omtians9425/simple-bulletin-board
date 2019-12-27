@@ -18,7 +18,6 @@ class ArticleController {
     lateinit var articleRepository: ArticleRepository
 
     @PostMapping
-    @ResponseBody
     fun registerArticle(@ModelAttribute articleRequest: ArticleRequest): String {
         articleRepository.save(
                 Article(
@@ -28,7 +27,7 @@ class ArticleController {
                         articleRequest.contents,
                         articleRequest.articleKey)
         )
-        return "Saved"
+        return "redirect:/" // this enables redirect
     }
 
     @GetMapping("/")
