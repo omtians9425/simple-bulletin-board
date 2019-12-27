@@ -17,7 +17,7 @@ function changeArticleSubmit(type) {
 
     switch (type) {
         case "Update":
-            changeArticleForm.action = "/edit/" + article_id
+            changeArticleForm.action = "/edit/" + article_id // request for server
             changeArticleForm.submit()
             break;
         default:
