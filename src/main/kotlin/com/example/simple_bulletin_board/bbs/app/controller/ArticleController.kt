@@ -31,7 +31,7 @@ class ArticleController {
         return "Saved"
     }
 
-    @GetMapping
+    @GetMapping("/")
     fun getArticleList(model: Model): String {
         model.addAttribute("articles", articleRepository.findAll())
         return "index"
