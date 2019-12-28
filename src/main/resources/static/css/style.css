@@ -94,3 +94,15 @@ div.Area_change_article {
     margin-top: 10px;
     margin-bottom: 20px;
 }
+
+div.alert {
+    text-align: center;
+    font-size: large;
+    font-style: italic;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+div.alert-error {
+    color: red;
+}

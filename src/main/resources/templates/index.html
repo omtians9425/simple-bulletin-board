@@ -9,6 +9,11 @@
 </head>
 <body>
 <header class="Area_header">サンプル掲示板</header>
+
+<!--th:id is used for html tag's id attribute-->
+<div th:class="'alert ' + *{alert_class}" role="alert" th:id="flash-message" th:if="${message}" th:text="${message}">
+</div>
+
 <div class="Area_register">
     <form th:action="@{/}" th:method="post">
         <table border="1" class="Area_register_table">
