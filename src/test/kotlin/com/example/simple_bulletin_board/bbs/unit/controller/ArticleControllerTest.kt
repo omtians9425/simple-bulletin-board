@@ -1,7 +1,6 @@
 package com.example.simple_bulletin_board.bbs.unit.controller
 
 import com.example.simple_bulletin_board.bbs.app.controller.ArticleController
-import org.hamcrest.MatcherAssert.assertThat
 import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
@@ -177,6 +176,4 @@ class ArticleControllerTest {
         val result = target.articleRepository.findById(latestArticle.id).isPresent
         assertEquals(false, result)
     }
-
-
 }
