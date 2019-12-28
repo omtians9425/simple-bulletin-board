@@ -115,4 +115,23 @@ class ArticleControllerTest {
         val updated = target.articleRepository.findAll().last()
         assertEquals("updated", updated.name)
     }
+
+    @Test
+    fun getDeleteConfirm_notExist_redirectToIndex() {
+        mockMvc.perform(get("/delete/confirm/" + 0))
+                .andExpect(status().is3xxRedirection)
+                .andExpect(view().name("redirect:/"))
+    }
+
+    @Test
+    @Sql(statements = ["INSERT INTO article (name, title, contents, article_key, register_at, update_at) VALUES ('test', 'test', 'test', 'test', now(), now())"])
+    fun getDeleteConfirm_exist_deleteAndToDeleteScreen() {
+        val latestArticle = target.articleRepository.findAll().last()
+
+        mockMvc.perform(get("/delete/confirm/" + latestArticle.id))
+                .andExpect(status().isOk)
+                .andExpect(view().name("delete_confirm"))
+    }
+
+
 }
