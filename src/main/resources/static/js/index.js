@@ -16,10 +16,13 @@ function changeArticleSubmit(type) {
     }
 
     switch (type) {
-        case "Update":
+        case "update":
             changeArticleForm.action = "/edit/" + article_id // request for server
             changeArticleForm.submit()
             break;
+        case "delete":
+            changeArticleForm.action = "/delete/confirm/" + article_id
+            changeArticleForm.submit()
         default:
             break;
     }

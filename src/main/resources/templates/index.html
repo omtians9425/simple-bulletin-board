@@ -66,9 +66,9 @@
 </div>
 
 <div class="Area_change_article">
-    <form th:action="@{/}" th:method="get" name="form_change_article">
-        <button type="button" onclick="changeArticleSubmit('Update')">編集</button> <!--call js method-->
-        <button type="button">削除</button>
+    <form th:action="@{/}" th:method="get" name="form_change_article"> <!--define http method and rooting-->
+        <button type="button" onclick="changeArticleSubmit('update')">編集</button> <!--call js method-->
+        <button type="button" onclick="changeArticleSubmit('delete')">削除</button>
     </form>
 
 </div>
