@@ -76,4 +76,18 @@ class ArticleController {
         model.addAttribute("article", articleRepository.findById(id).get())
         return "delete_confirm"
     }
+
+    @PostMapping("/delete")
+    fun deleteArticle(@ModelAttribute articleRequest: ArticleRequest): String {
+        if (!articleRepository.existsById(articleRequest.id)) {
+            return "redirect:/"
+        }
+        val article = articleRepository.findById(articleRequest.id).get()
+        if (article.articleKey != articleRequest.articleKey) {
+            return "redirect:/delete/confirm/${article.id}"
+        }
+
+        articleRepository.deleteById(articleRequest.id)
+        return "redirect:/"
+    }
 }
