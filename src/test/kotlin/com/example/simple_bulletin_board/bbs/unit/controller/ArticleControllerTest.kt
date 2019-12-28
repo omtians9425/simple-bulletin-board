@@ -40,6 +40,8 @@ class ArticleControllerTest {
                         .param("articleKey", "test"))
                 .andExpect(status().is3xxRedirection)
                 .andExpect(view().name("redirect:/"))
+                .andExpect(flash().attributeExists("message"))
+                .andExpect(flash().attribute("message", ArticleController.MESSAGE_REGISTER_NORMAL))
     }
 
     @Test
