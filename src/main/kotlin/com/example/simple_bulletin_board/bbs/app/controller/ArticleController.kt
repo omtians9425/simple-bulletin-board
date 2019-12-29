@@ -52,12 +52,12 @@ class ArticleController {
         if (model.containsAttribute("errors")) {
             val key = BindingResult.MODEL_KEY_PREFIX + "articleRequest"
             println("error: $key, ${BindingResult.MODEL_KEY_PREFIX}")
-            model.addAttribute(key, model.asMap()["errors"])
+            model.addAttribute(key, model.asMap()["errors"]) // get value
         }
 
         if (model.containsAttribute("request")) {
             // pass the request contents so that view can reproduce them at the time of validation error
-            model.addAttribute("articleRequest", model.asMap()["request"])
+            model.addAttribute("articleRequest", model.asMap()["request"]) // get value
         }
 
         model.addAttribute("articles", articleRepository.findAll()) // model is used for UI
@@ -143,14 +143,27 @@ class ArticleController {
             return "redirect:/"
         }
         model.addAttribute("article", articleRepository.findById(id).get())
+
+        val key = BindingResult.MODEL_KEY_PREFIX
+        if (model.containsAttribute("errors")) {
+            model.addAttribute(key, model.asMap()["errors"])
+        }
         return "delete_confirm"
     }
 
     @PostMapping("/delete")
     fun deleteArticle(
-            @ModelAttribute articleRequest: ArticleRequest,
+            @Validated @ModelAttribute articleRequest: ArticleRequest,
+            result: BindingResult,
             redirectAttributes: RedirectAttributes
     ): String {
+
+        if (result.hasErrors()) {
+            redirectAttributes.addFlashAttribute("errors", result)
+            redirectAttributes.addFlashAttribute("request", articleRequest)
+            return "redirect:/delete/confirm/${articleRequest.id}"
+        }
+
         if (!articleRepository.existsById(articleRequest.id)) {
             redirectAttributes.addFlashAttribute("message", MESSAGE_ARTICLE_DOES_NOT_EXISTS)
             redirectAttributes.addFlashAttribute("alert_class", ALERT_CLASS_ERROR)

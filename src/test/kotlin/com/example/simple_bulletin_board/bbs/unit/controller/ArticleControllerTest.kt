@@ -172,6 +172,17 @@ class ArticleControllerTest {
     }
 
     @Test
+    fun deleteArticle_validationError() {
+        mockMvc.perform(
+                post("/delete")
+        )
+        .andExpect(status().is3xxRedirection)
+        .andExpect(view().name("redirect:/delete/confirm/0"))
+        .andExpect(flash().attributeExists("errors"))
+        .andExpect(flash().attributeExists("request"))
+    }
+
+    @Test
     fun deleteArticle_notExist_redirectToIndex() {
         mockMvc.perform(post("/delete")
                 .param("id", "0")
@@ -195,7 +206,7 @@ class ArticleControllerTest {
                 .param("name", latestArticle.name)
                 .param("title", latestArticle.title)
                 .param("contents", latestArticle.contents)
-                .param("articleKey", "differentKey"))
+                .param("articleKey", "diff"))
                 .andExpect(status().is3xxRedirection)
                 .andExpect(view().name("redirect:/delete/confirm/${latestArticle.id}"))
                 .andExpect(flash().attribute("message", ArticleController.MESSAGE_ARTICLE_KEY_UNMATCH))
