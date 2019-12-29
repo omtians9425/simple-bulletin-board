@@ -132,6 +132,9 @@ class ArticleControllerTest {
         mockMvc.perform(get("/delete/confirm/" + 0))
                 .andExpect(status().is3xxRedirection)
                 .andExpect(view().name("redirect:/"))
+                .andExpect(flash().attributeExists("message"))
+                .andExpect(flash().attribute("message", ArticleController.MESSAGE_ARTICLE_DOES_NOT_EXISTS))
+                .andExpect(flash().attribute("alert_class", ArticleController.ALERT_CLASS_ERROR))
     }
 
     @Test
@@ -154,6 +157,8 @@ class ArticleControllerTest {
                 .param("articleKey", ".err"))
                 .andExpect(status().is3xxRedirection)
                 .andExpect(view().name("redirect:/"))
+                .andExpect(flash().attributeExists("message"))
+                .andExpect(flash().attribute("message", ArticleController.MESSAGE_ARTICLE_DOES_NOT_EXISTS))
     }
 
     @Test
@@ -169,6 +174,8 @@ class ArticleControllerTest {
                 .param("articleKey", "differentKey"))
                 .andExpect(status().is3xxRedirection)
                 .andExpect(view().name("redirect:/delete/confirm/${latestArticle.id}"))
+                .andExpect(flash().attribute("message", ArticleController.MESSAGE_ARTICLE_KEY_UNMATCH))
+                .andExpect(flash().attribute("alert_class", ArticleController.ALERT_CLASS_ERROR))
     }
 
     @Test
@@ -184,6 +191,8 @@ class ArticleControllerTest {
                 .param("articleKey", latestArticle.articleKey))
                 .andExpect(status().is3xxRedirection)
                 .andExpect(view().name("redirect:/"))
+                .andExpect(flash().attributeExists("message"))
+                .andExpect(flash().attribute("message", ArticleController.MESSAGE_DELETE_NORMAL))
 
         val result = target.articleRepository.findById(latestArticle.id).isPresent
         assertEquals(false, result)

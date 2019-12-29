@@ -88,8 +88,14 @@ class ArticleController {
     }
 
     @GetMapping("/delete/confirm/{id}")
-    fun getDeleteConfirm(@PathVariable id: Int, model: Model): String {
+    fun getDeleteConfirm(
+            @PathVariable id: Int,
+            model: Model,
+            redirectAttributes: RedirectAttributes
+    ): String {
         if (!articleRepository.existsById(id)) {
+            redirectAttributes.addFlashAttribute("message", MESSAGE_ARTICLE_DOES_NOT_EXISTS)
+            redirectAttributes.addFlashAttribute("alert_class", ALERT_CLASS_ERROR)
             return "redirect:/"
         }
         model.addAttribute("article", articleRepository.findById(id).get())
@@ -97,16 +103,24 @@ class ArticleController {
     }
 
     @PostMapping("/delete")
-    fun deleteArticle(@ModelAttribute articleRequest: ArticleRequest): String {
+    fun deleteArticle(
+            @ModelAttribute articleRequest: ArticleRequest,
+            redirectAttributes: RedirectAttributes
+    ): String {
         if (!articleRepository.existsById(articleRequest.id)) {
+            redirectAttributes.addFlashAttribute("message", MESSAGE_ARTICLE_DOES_NOT_EXISTS)
+            redirectAttributes.addFlashAttribute("alert_class", ALERT_CLASS_ERROR)
             return "redirect:/"
         }
         val article = articleRepository.findById(articleRequest.id).get()
         if (article.articleKey != articleRequest.articleKey) {
+            redirectAttributes.addFlashAttribute("message", MESSAGE_ARTICLE_KEY_UNMATCH)
+            redirectAttributes.addFlashAttribute("alert_class", ALERT_CLASS_ERROR)
             return "redirect:/delete/confirm/${article.id}"
         }
 
         articleRepository.deleteById(articleRequest.id)
+        redirectAttributes.addFlashAttribute("message", MESSAGE_DELETE_NORMAL)
         return "redirect:/"
     }
 
@@ -115,6 +129,7 @@ class ArticleController {
         const val MESSAGE_ARTICLE_DOES_NOT_EXISTS = "対象の記事が見つかりませんでした"
         const val MESSAGE_UPDATE_NORMAL = "正常に更新しました"
         const val MESSAGE_ARTICLE_KEY_UNMATCH = "投稿KEYが一致しません"
+        const val MESSAGE_DELETE_NORMAL = "正常に削除しました"
 
         const val ALERT_CLASS_ERROR = "alert-error"
     }
