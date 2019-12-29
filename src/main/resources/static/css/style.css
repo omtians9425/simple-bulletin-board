@@ -106,3 +106,32 @@ div.alert {
 div.alert-error {
     color: red;
 }
+
+/* for pagination */
+/* ページング*/
+div.Area_pager {
+    width: 100%;
+    text-align: center;
+    margin-bottom: 10px;
+}
+
+div.Area_pager a:link {
+    color: black;
+    text-decoration-line: underline;
+}
+
+div.Area_pager a:visited {
+    color: black;
+}
+
+div.Area_pager ul {
+    padding: 0px;
+}
+
+div.Area_pager ul li {
+    display: inline;
+}
+
+div.Area_pager ul li.disabled {
+    color: grey;
+}

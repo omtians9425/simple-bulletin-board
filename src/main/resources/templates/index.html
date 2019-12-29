@@ -51,7 +51,7 @@
     </form>
 </div>
 <div class="border_line"></div>
-<div class="Area_articles" th:each="article:${articles}" th:object="${article}">
+<div class="Area_articles" th:each="article:${page}" th:object="${article}">
     <div>
         <table border="1" class="Area_articles_table">
             <tr class="Area_article_title">
@@ -73,6 +73,33 @@
             </tr>
         </table>
     </div>
+</div>
+
+<!--for pagination-->
+<div th:if="${page.totalPages}" class="Area_pager">
+    <div class="border_line"></div>
+
+    <ul>
+        <li th:class="${page.first} ? 'disabled' : ''">
+            <span th:if="${page.first}">＜＜</span>
+            <a th:if="${not page.first}" th:href="@{${url}(page=0)}">＜＜</a>
+        </li>
+        <li th:class="${page.first} ? 'disabled' : ''">
+            <span th:if="${page.first}">＜</span>
+            <a th:if="${not page.first}" th:href="@{${url}(page=(${page.number}-1))}">＜</a>
+        </li>
+        <li th:class="${page.last} ? 'disabled' : ''">
+            <span th:if="${page.last}">＞</span>
+            <a th:if="${not page.last}" th:href="@{${url}(page=(${page.number}+1))}">＞</a>
+        </li>
+        <li th:class="${page.last} ? 'disabled' : ''">
+            <span th:if="${page.last}">＞＞</span>
+            <a th:if="${not page.last}" th:href="@{${url}(page=(${page.totalPages}-1))}">＞＞</a>
+        </li>
+    </ul>
+    <div><span th:text="${page.number+1} + '/' + ${page.totalPages} + 'ページ'">1/3</span></div>
+    <div class="border-line"></div>
+
 </div>
 
 <div class="Area_change_article">
