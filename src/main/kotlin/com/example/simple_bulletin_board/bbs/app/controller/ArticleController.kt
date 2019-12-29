@@ -6,6 +6,8 @@ import com.example.simple_bulletin_board.bbs.domain.repository.ArticleRepository
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
+import org.springframework.validation.BindingResult
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 import org.springframework.web.servlet.mvc.support.RedirectAttributes
 import java.util.*
@@ -16,11 +18,19 @@ class ArticleController {
     @Autowired
     lateinit var articleRepository: ArticleRepository
 
-    @PostMapping
+    @PostMapping("/")
     fun registerArticle(
-            @ModelAttribute articleRequest: ArticleRequest,
+            @Validated @ModelAttribute articleRequest: ArticleRequest,
+            result: BindingResult, // result of validation
             redirectAttributes: RedirectAttributes
     ): String {
+        // when validation error
+        if (result.hasErrors()) {
+            redirectAttributes.addFlashAttribute("errors", result)
+            redirectAttributes.addFlashAttribute("request", articleRequest)
+
+            return "redirect:/"
+        }
         articleRepository.save(
                 Article(
                         articleRequest.id,
@@ -34,7 +44,21 @@ class ArticleController {
     }
 
     @GetMapping("/")
-    fun getArticleList(model: Model): String {
+    fun getArticleList(
+            @ModelAttribute articleRequest: ArticleRequest,
+            model: Model
+    ): String {
+
+        if (model.containsAttribute("errors")) {
+            val key = BindingResult.MODEL_KEY_PREFIX + "articleRequest"
+            model.addAttribute(key, model.asMap()["errors"])
+        }
+
+        if (model.containsAttribute("request")) {
+            // pass the request contents so that view can reproduce them at the time of validation error
+            model.addAttribute("articleRequest", model.asMap()["request"])
+        }
+
         model.addAttribute("articles", articleRepository.findAll()) // model is used for UI
         return "index" // means "index.html"
     }
