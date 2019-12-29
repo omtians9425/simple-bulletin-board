@@ -27,3 +27,10 @@ function changeArticleSubmit(type) {
             break;
     }
 }
+
+function scrollToAreaChangeArticle() {
+    window.scrollTo({
+        top: document.documentElement.scrollHeight - document.documentElement.clientHeight,
+        behavior: "smooth"
+    });
+}

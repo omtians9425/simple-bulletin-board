@@ -52,7 +52,7 @@
             <tr class="Area_article_title">
                 <td>
                     <label>
-                        <input type="radio" name="article_check" th:text="*{id} + '.   ' + *{title}" th:data-id="*{id}"/>
+                        <input type="radio" name="article_check" th:text="*{id} + '.   ' + *{title}" th:data-id="*{id}" onclick="scrollToAreaChangeArticle()"/>
                     </label>
                 </td>
             </tr>
