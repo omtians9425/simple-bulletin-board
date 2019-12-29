@@ -45,6 +45,21 @@ class ArticleControllerTest {
     }
 
     @Test
+    fun registerArticle_validationError() {
+        mockMvc.perform(
+                post("/")
+                .param("name", "")
+                .param("title", "")
+                .param("contents", "")
+                .param("articleKey", "")
+        )
+                .andExpect(status().is3xxRedirection)
+                .andExpect(view().name("redirect:/"))
+                .andExpect(flash().attributeExists("errors"))
+                .andExpect(flash().attributeExists("request"))
+    }
+
+    @Test
     fun getArticleListTest() {
         mockMvc.perform(get("/"))
                 .andExpect(status().isOk)
