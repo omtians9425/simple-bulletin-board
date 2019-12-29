@@ -8,6 +8,11 @@
 </head>
 <body>
     <header class="Area_header">投稿内容の削除</header>
+
+    <div th:class="'alert ' + *{alert_class}" role="alert" th:id="flash-message" th:if="${message}" th:text="${message}">
+
+    </div>
+
     <div class="Area_register">
         <form th:action="@{/delete}" th:method="post" th:object="${article}">
             <table border="1" class="Area_register_table">
