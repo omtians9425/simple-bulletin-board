@@ -51,6 +51,7 @@ class ArticleController {
 
         if (model.containsAttribute("errors")) {
             val key = BindingResult.MODEL_KEY_PREFIX + "articleRequest"
+            println("error: $key, ${BindingResult.MODEL_KEY_PREFIX}")
             model.addAttribute(key, model.asMap()["errors"])
         }
 
