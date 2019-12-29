@@ -50,7 +50,7 @@ class ArticleController {
     ): String {
 
         if (model.containsAttribute("errors")) {
-            val key = BindingResult.MODEL_KEY_PREFIX + "articleRequest"
+            val key = BindingResult.MODEL_KEY_PREFIX + "articleRequest" // thymeleaf references error info by this format
             println("error: $key, ${BindingResult.MODEL_KEY_PREFIX}")
             model.addAttribute(key, model.asMap()["errors"]) // get value
         }
@@ -144,7 +144,7 @@ class ArticleController {
         }
         model.addAttribute("article", articleRepository.findById(id).get())
 
-        val key = BindingResult.MODEL_KEY_PREFIX
+        val key = BindingResult.MODEL_KEY_PREFIX + "article"
         if (model.containsAttribute("errors")) {
             model.addAttribute(key, model.asMap()["errors"])
         }
