@@ -71,8 +71,18 @@ class ArticleController {
             redirectAttributes: RedirectAttributes
     ): String {
         return if (articleRepository.existsById(id)) {
-            //attribute name is used by html
-            model.addAttribute("article", articleRepository.findById(id))
+            if (model.containsAttribute("request")) {
+                model.addAttribute("article", model.asMap()["request"])
+            } else {
+                //attribute name is used by html
+                model.addAttribute("article", articleRepository.findById(id).get())
+            }
+
+            if (model.containsAttribute("errors")) {
+                val key = BindingResult.MODEL_KEY_PREFIX + "article"
+                model.addAttribute(key, model.asMap()["errors"])
+            }
+
             "edit" // means "edit.html"
         } else {
             redirectAttributes.addFlashAttribute("message", MESSAGE_ARTICLE_DOES_NOT_EXISTS)
@@ -83,9 +93,18 @@ class ArticleController {
 
     @PostMapping("/update")
     fun updateArticle(
-            articleRequest: ArticleRequest,
+            @Validated articleRequest: ArticleRequest,
+            result: BindingResult, // [getArticleEdit] result
             redirectAttributes: RedirectAttributes
     ): String {
+
+        if (result.hasErrors()) {
+            redirectAttributes.addFlashAttribute("errors", result)
+            redirectAttributes.addFlashAttribute("request", articleRequest)
+
+            return "redirect:/edit/${articleRequest.id}"
+        }
+
         if (!articleRepository.existsById(articleRequest.id)) {
             redirectAttributes.addFlashAttribute("message", MESSAGE_ARTICLE_DOES_NOT_EXISTS)
             redirectAttributes.addFlashAttribute("alert_class", ALERT_CLASS_ERROR)

@@ -87,6 +87,15 @@ class ArticleControllerTest {
     }
 
     @Test
+    fun updateArticle_validationError() {
+        mockMvc.perform(post("/update"))
+                .andExpect(status().is3xxRedirection)
+                .andExpect(view().name("redirect:/edit/0"))
+                .andExpect(flash().attributeExists("errors"))
+                .andExpect(flash().attributeExists("request"))
+    }
+
+    @Test
     fun updateArticle_notExists_redirectToIndex() {
         mockMvc.perform(post("/update")
                 .param("id", "0")
@@ -112,7 +121,7 @@ class ArticleControllerTest {
                 .param("name", latestArticle.name)
                 .param("title", latestArticle.title)
                 .param("contents", latestArticle.contents)
-                .param("articleKey", "differentKey")
+                .param("articleKey", "diff")
         )
                 .andExpect(status().is3xxRedirection)
                 .andExpect(view().name("redirect:/edit/${latestArticle.id}"))
