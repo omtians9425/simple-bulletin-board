@@ -4,6 +4,9 @@ import com.example.simple_bulletin_board.bbs.app.request.ArticleRequest
 import com.example.simple_bulletin_board.bbs.domain.entity.Article
 import com.example.simple_bulletin_board.bbs.domain.repository.ArticleRepository
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageRequest
+import org.springframework.data.domain.Sort
 import org.springframework.stereotype.Controller
 import org.springframework.ui.Model
 import org.springframework.validation.BindingResult
@@ -46,8 +49,16 @@ class ArticleController {
     @GetMapping("/")
     fun getArticleList(
             @ModelAttribute articleRequest: ArticleRequest,
+            @RequestParam(value = "page", defaultValue = "0", required = false) page: Int,
             model: Model
     ): String {
+
+        val pageable = PageRequest.of(
+                page,
+                PAGE_SIZE,
+                Sort.by(Sort.Direction.DESC, "updateAt")
+                        .and(Sort.by(Sort.Direction.ASC, "id"))
+        )
 
         if (model.containsAttribute("errors")) {
             val key = BindingResult.MODEL_KEY_PREFIX + "articleRequest" // thymeleaf references error info by this format
@@ -60,7 +71,8 @@ class ArticleController {
             model.addAttribute("articleRequest", model.asMap()["request"]) // get value
         }
 
-        model.addAttribute("articles", articleRepository.findAll()) // model is used for UI
+        val articles: Page<Article> = articleRepository.findAll(pageable)
+        model.addAttribute("page", articles) // model is used for UI
         return "index" // means "index.html"
     }
 
@@ -189,5 +201,7 @@ class ArticleController {
         const val MESSAGE_DELETE_NORMAL = "正常に削除しました"
 
         const val ALERT_CLASS_ERROR = "alert-error"
+
+        const val PAGE_SIZE = 10
     }
 }

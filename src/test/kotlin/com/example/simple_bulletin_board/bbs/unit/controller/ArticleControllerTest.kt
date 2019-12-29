@@ -63,7 +63,7 @@ class ArticleControllerTest {
     fun getArticleListTest() {
         mockMvc.perform(get("/"))
                 .andExpect(status().isOk)
-                .andExpect(model().attributeExists("articles"))
+                .andExpect(model().attributeExists("page"))
                 .andExpect(view().name("index")) // not content()#string(). this is for api (not view)
     }
 
